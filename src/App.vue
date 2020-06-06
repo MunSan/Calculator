@@ -2,16 +2,29 @@
   <div id="app">
     <img src="./assets/logo.png">
     <router-view/>
+    <section>
+       <button-component
+        buttonEntry='9'>
+       </button-component>
+    </section>
   </div>
 </template>
 
 <script>
+import ButtonComponent from './components/Boton.vue'
+
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    ButtonComponent
+  },
+  props: {
+    msg: String
+  }
 }
 </script>
 
-<style>
+<style scoped>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
