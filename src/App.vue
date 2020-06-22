@@ -4,7 +4,7 @@
     <router-view/>
     <section>
        <button-component
-        buttonEntry='9'>
+        value=7 spanX=0>
        </button-component>
     </section>
   </div>
