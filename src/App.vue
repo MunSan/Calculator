@@ -1,21 +1,21 @@
+<script src="https://unpkg.com/vuex"></script>
 <template>
   <div id="app">
     <img src="./assets/logo.png">
     <router-view/>
-    <section>
-       <button-component
-        value=7 spanX=0>
-       </button-component>
-    </section>
+       <keyboard-component>
+       </keyboard-component>
   </div>
 </template>
 
 <script>
+import KeyboardComponent from './components/Teclado.vue'
 import ButtonComponent from './components/Boton.vue'
 
 export default {
   name: 'App',
   components: {
+    KeyboardComponent,
     ButtonComponent
   },
   props: {

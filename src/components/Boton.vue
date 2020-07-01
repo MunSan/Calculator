@@ -1,19 +1,15 @@
 <template lang="html">
   <div>
-    <button
-    class="goodButton"
+    <button class="goodButton"
     type="button"
+    :disabled="$store.commit('checkstate', value)"
     :style="StyleObj"
-    @click = getValue()
-    v-if = goodEntry(value)
+    @click="giveValue('get-value', value)"
+    v-if="goodEntry(value)"
     >
       {{ value }}
     </button>
-    <button
-    class="badButton"
-    type="button"
-    :style="StyleObj"
-    @click = getValue()
+    <button class="badButton" type="button" :style="StyleObj" @click="giveValue(value)"
     v-else
     >
       Bad character entry
@@ -22,90 +18,89 @@
 </template>
 
 <script>
+import store from '@/store'
+
 export default {
   name: 'ButtonComponent',
   props: {
     value: String(), // Dígito, signo de operación o signo igual
-    spanX: {
-      type: Number(),
-      default: 1
-    },
-    spanY: {
-      type: Number(),
-      default: 1
+    spanX: { type: Number(), default: 1 },
+    spanY: { type: Number(), default: 1 },
+    store: store
+  },
+  data: function () {
+    return {
+      dataSpanX: { type: Number(), default: this.spanX },
+      dataSpanY: { type: Number(), default: this.spanY }
     }
   },
   methods: {
     goodEntry (value) {
-      var arr = ['C', '%', '^', '/', '*', '+', '-', '=', '(', ')',
+      let arr = ['C', '%', '^', '/', '*', '+', '-', '=', '(', ')',
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-      if (String(this.value) in arr) {
+      if (arr.includes(this.value)) {
         return true
       } else {
         return false
       }
     },
-    getValue () {
-      return this.value
+    giveValue () {
+      this.$emit('get-value', this.value)
+      // console.log(String(this.computedHeight))
     },
     setSpans () {
-      if (this.spanX >= 1) {
-        this.spanX = parseInt(Math.sqrt(Math.pow(this.spanX, 2)), 10)
-        this.spanY = 1
+      if (this.spanX > 1) {
+        this.dataSpanX = parseInt(Number(this.spanX), 10)
+        this.dataSpanY = 1
       } else {
-        this.spanX = 1
+        this.dataSpanX = 1
       }
-      if (this.spanY >= 1) {
-        this.spanY = parseInt(Math.sqrt(Math.pow(this.spanY, 2)), 10)
-        this.spanX = 1
+      if (this.spanY > 1) {
+        this.dataSpanY = parseInt(Number(this.spanY), 10)
+        this.dataSpanX = 1
       } else {
-        this.spanY = 1
+        this.dataSpanY = 1
       }
-      // Haciendo raíz del resultado al cuadrado, me desligo de los números negativos
     }
   },
   computed: {
-    StyleObj: function () {
+    StyleObj () {
       return {
-        height: String(this.computedHeight.height) + 'px',
-        widht: String(this.computedWidht.widht) + 'px',
+        height: String(this.computedHeight) + 'px',
+        width: String(this.computedWidth) + 'px',
         fontSize: '18px',
         fontWeight: 'bold',
         color: 'rgb(5, 5, 5)',
-        margin: '2px'
+        margin: '1px'
       }
     },
     computedHeight () {
       let height = Number
-      if (this.spanY > 1) {
-        height = (this.spanX > 1)
-          ? 45 : (45 * this.spanY + 2 * (this.spanY - 1))
+      if (this.dataSpanY > 1) {
+        height = (this.dataSpanX > 1)
+          ? 45 : (45 * this.dataSpanY + 2 * (this.dataSpanY - 1))
       } else {
         height = 45
       }
-      return {
-        height
-      }
+      return height
     },
-    computedWidht () {
-      let widht = Number
-      if (this.spanX > 1) {
-        widht = (this.spanY > 1)
-          ? 45 : (45 * this.spanX + 2 * (this.spanX - 1))
+    computedWidth () {
+      let width = Number
+      if (this.dataSpanX > 1) {
+        width = (this.dataSpanY > 1)
+          ? 45 : (45 * this.dataSpanX + 2 * (this.dataSpanX - 1))
       } else {
-        widht = 45
+        width = 45
       }
-      return {
-        widht
-      }
+      return width
     }
   },
-  created () {
+  mounted: function () {
     this.setSpans()
   }
 }
 </script>
 
-<style lang="css">
+<style scoped lang="css">
   /*button { font-size: 18px; font-weight: bold; color: rgb(5, 5, 5); margin: 2px; }*/
 </style>

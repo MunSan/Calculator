@@ -16,3 +16,4 @@ selenium-debug.log
 *.njsproj
 *.sln
 ~/.vscode-root
+~/.node_modules
